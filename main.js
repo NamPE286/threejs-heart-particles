@@ -89,7 +89,7 @@ scene.add(camera);
 /* -------------------------------- Controls -------------------------------- */
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-
+controls.enableZoom = false;
 /* -------------------------------- Renderer -------------------------------- */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
@@ -103,19 +103,22 @@ scene.add(axesHelper); */
 
 /* --------------------------------- Animate -------------------------------- */
 const clock = new THREE.Clock();
-const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
+var divider = 100
+window.addEventListener("wheel", event => {
+  divider += event.deltaY / 10
+  if(divider < 1) divider = 1
+  if(divider > 500) divider = 500
+  console.log(divider)
 
+});
+function update() {
   //Update particles
+  document.querySelector('#speed').innerHTML = 510 - divider
   for (let i = 0; i < count; i++) {
     let i3 = i * 3;
     const X = particlesGeometry.attributes.position.array[i3];
-    const A = (Math.sin(elapsedTime * 0.1) - 0.5) * 50 * 2;
-    particlesGeometry.attributes.position.array[i3 + 1] =
-      Math.pow(Math.abs(X), 2 / 3) +
-      0.9 *
-      Math.pow(5 - Math.pow(Math.abs(X), 2), 1 / 2) *
-      Math.sin(A * Math.abs(X));
+    const A = (Math.sin(clock.getElapsedTime() / (divider)) - 0.5) * 50 * 2;
+    particlesGeometry.attributes.position.array[i3 + 1] = Math.pow(Math.abs(X), 2 / 3) + 0.9 * Math.pow(5 - Math.pow(Math.abs(X), 2), 1 / 2) * Math.sin(A * Math.abs(X))
   }
   particlesGeometry.attributes.position.needsUpdate = true;
 
@@ -126,7 +129,7 @@ const tick = () => {
   renderer.render(scene, camera);
 
   // Call tick again on the next frame
-  window.requestAnimationFrame(tick);
+  window.requestAnimationFrame(update);
 };
 
-tick();
+update();

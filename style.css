@@ -1,5 +1,14 @@
-canvas{
+html{
+  font-family: 'Courier New', Courier, monospace;
+}
+main{
   position: fixed;
   top: 0;
   left: 0;
+}
+main p{
+  color: white;
+  position: fixed;
+  margin-left: 15px;
+  bottom: 0;
 }
