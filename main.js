@@ -108,9 +108,18 @@ window.addEventListener("wheel", event => {
   divider += event.deltaY / 10
   if(divider < 1) divider = 1
   if(divider > 500) divider = 500
-  console.log(divider)
-
 });
+window.addEventListener('keydown', e => {
+  if(e.key == "Control"){
+    controls.enableZoom = true;
+  }
+})
+window.addEventListener('keyup', e => {
+  console.log(e)
+  if (e.key == "Control") {
+    controls.enableZoom = false;
+  }
+})
 function update() {
   //Update particles
   document.querySelector('#speed').innerHTML = 510 - divider
